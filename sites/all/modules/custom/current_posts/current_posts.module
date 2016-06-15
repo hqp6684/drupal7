@@ -21,6 +21,13 @@ function current_posts_help($path, $arg) {
 /**
  * Implements hook_block_info().
  */
+
+/*
+There is a way to include the JS you need and still 
+enable caching for the html. To do this, following these instructions.
+https://api.drupal.org/api/drupal/modules%21block%21block.api.php/function/hook_block_view/7.x
+*/
+
 function current_posts_block_info() {
   $blocks['current_posts'] = array(
     // The name that will appear in the block list.
@@ -38,33 +45,21 @@ function current_posts_block_info() {
  * Prepares the contents of the block.
  */
 function current_posts_block_view($delta = '') {
-  switch ($delta) {
-    case 'current_posts':
-      $block['subject'] = t('Current posts');
 
-      $block['content'] = t('<p> this is cnrrent posts block con tent</p>');
-      // if (user_access('access content')) {
-      //   // Use our custom function to retrieve data.
-      //   $result = current_posts_contents();
-      //   // Array to contain items for the block to render.
-      //   $items = array();
-      //   // Iterate over the resultset and format as links.
-      //   foreach ($result as $node) {
-      //     $items[] = array(
-      //       'data' => l($node->title, 'node/' . $node->nid),
-      //     ); 
-      //   }
-      //  // No content in the last week.
-      //   if (empty($items)) {
-      //     $block['content'] = t('No posts available.');  
-      //   } 
-      //   else {
-      //     // Pass data through theme function.
-      //     $block['content'] = theme('item_list', array(
-      //       'items' => $items));
-      //   }
-      // }
-    return $block;
+    $libs = drupal_get_path('module', 'current_posts');
+    $js_libs = $libs . '/libs/js/current.js';
+
+        switch ($delta) {
+        case 'current_posts':
+          $block['subject'] = t('Current posts');
+
+          $block['content'] = array(
+
+            '#attached' => array ($js_libs),
+            '#markup' => t($js_libs)
+            );
+        return $block;
   }
   
 }
+
