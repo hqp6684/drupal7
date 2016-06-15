@@ -1,0 +1,40 @@
+<?php
+
+/** Hook_menu*/
+
+function shiny_menu(){
+    $items['admin/config/shiny'] = array(
+        'title' => 'Shiny Visualization',
+        'description' => 'Configure Shiny visualization options.',
+        'position' => 'right',
+        'weight' => -5,
+        'page callback' => 'system_admin_menu_block_page',
+        'access arguments' => array('administer site configuration'),
+        'file' => 'system.admin.inc',
+        'file path' => drupal_get_path('module', 'system')
+        );
+
+    $items['admin/config/shiny/settings'] = array(
+        'title' => 'Shiny Settings',
+        'description' => 'Configure Shiny visualization Settings.',
+        'page callback' => 'system_admin_menu_block_page',
+        'access arguments' => array('administer site configuration'),
+        'type' => MENU_NORMAL_ITEM,
+        'file' => 'shiny.admin.inc'
+        );
+
+}
+
+/* hook_on_load() */
+
+function shiny_node_load($nodes, $types){
+    global $user;
+
+    //check to see if the person viewing the node is the author. 
+    //if not hide the module
+    foreach ($nodes as $node ) {
+        if($user->uid != $node->uid){
+            unset($node->shiny);
+        }
+    }
+}

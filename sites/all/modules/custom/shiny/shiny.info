@@ -1,0 +1,7 @@
+name = Shiny
+description = Shiny-Drupal communication
+core = 7.x
+files[] = shiny.module
+files[] = shiny.install 
+files[] = shiny.admin.inc
+configure=admin/config/content/shiny/settings

@@ -1,0 +1,36 @@
+<?php
+
+function shiny_install(){
+    //check if shiny field exists
+    $field = field_info_field('shiny');
+
+    if(empty($field)){
+        $field = array(
+            'field_name' => 'shiny',
+            'type' => 'text_with_summary',
+            'entity_type' => array('node'),
+            'translatable' => TRUE,
+            );
+        $field = field_create_field($field);
+    }
+}
+
+function shiny_uninstall(){
+    watchdog("Shiny Module", "Uninstall shiny and deleting field");
+    $types = node_type_get_types();
+    foreach ($types as $type) {
+        shiny_delete_shiny($type);
+    }
+
+    $field = field_info_field('shiny');
+    if($field){
+        field_delete_field('shiny');
+    }
+}
+
+function shiny_delete_shiny($type){
+    $instance = field_info_instance('node', 'shiny', $type->type);
+    if($instance){
+        field_delete_instance($instance);
+    }
+}
