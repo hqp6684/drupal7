@@ -218,7 +218,7 @@ $databases = array (
     'default' => 
     array (
       'database' => 'drupal7',
-      'username' => 'hpham24',
+      'username' => 'dadmin',
       'password' => 'admin',
       'host' => 'localhost',
       'port' => '',

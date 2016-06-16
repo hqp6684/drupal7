@@ -51,13 +51,20 @@ function current_posts_block_view($delta = '') {
 
         switch ($delta) {
         case 'current_posts':
-          $block['subject'] = t('Current posts');
+            $block['subject'] = t('Current posts');
 
-          $block['content'] = array(
+            $block['content'] = array(
 
-            '#attached' => array ($js_libs),
-            '#markup' => t($js_libs)
+                '#attached' => array (
+
+                    'js' => array(
+                        $js_libs
+                    ),
+                    'css' => array()
+                ),
+                '#markup' => t($js_libs)
             );
+            
         return $block;
   }
   

@@ -1,6 +1,5 @@
-
-var test = function(
-    console.log('hello world');
-    );
+var test = function function_name () {
+     window.alert("this is test");
+}
 
 test();
