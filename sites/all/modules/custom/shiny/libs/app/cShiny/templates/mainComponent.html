@@ -1,0 +1,17 @@
+<div> 
+  <form>
+    <div class="form-group">
+      <label for="compound">Compound</label>
+      <input type="text" ng-model="$ctrl.dataBlock.compound"class="form-control" id="compound">
+    </div>
+    <div class="form-group">
+      <label for="dataBlock">Data Block</label>
+      <input type="text" ng-model="$ctrl.dataBlock.dataBlock" class="form-control" id="dataBlock">
+    </div>
+
+    <button type="submit" ng-click="$ctrl.updateData()" class="btn btn-default">Submit</button>
+  </form>
+  <!-- end form -->
+</div>
+
+<child-component api="$ctrl.childComponent"> </child-component>

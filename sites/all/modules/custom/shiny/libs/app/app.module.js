@@ -6,5 +6,6 @@
 
 angular.module('devApp', [
 
-		'shiny'
+		// 'shiny',
+        'cShiny'
 	]);

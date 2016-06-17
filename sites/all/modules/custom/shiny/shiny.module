@@ -46,9 +46,11 @@ function shiny_block_view($delta = '') {
                         $libs_path.'js/angular.min.js',
                         //shiny angular app
                         $libs_path.'app/app.module.js',
-                        $libs_path.'app/shiny/shiny.module.js',
-                        $libs_path.'app/shiny/shiny.component.js',
-                        $libs_path.'app/shiny/shiny.service.js',
+                        // $libs_path.'app/shiny/shiny.module.js',
+                        // $libs_path.'app/shiny/shiny.component.js',
+                        // $libs_path.'app/shiny/shiny.service.js',
+                        //v1.2
+                        $libs_path.'app/cShiny/cShiny.js',
 
                     ),// end js array
 
@@ -74,7 +76,7 @@ function generate_block_content($libs_path){
 
     <p> This is the main content of shiny block</p>
 
-    <div ng-app="devApp"> <shiny> </shiny> </div>
+    <div ng-app="devApp"> <main-component> </main-component> </div>
 
     ';
 
