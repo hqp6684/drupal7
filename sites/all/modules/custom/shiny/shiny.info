@@ -1,3 +1,9 @@
 name = Shiny
 description = Shiny-Drupal Integration v1.2
 core = 7.x
+package = User Interface
+files[] = shiny.modules
+files[] = shiny.admin.inc
+files[] = shiny.install
+
+configure = admin/config/shiny/settings

@@ -1,14 +1,14 @@
 <?php
 /**
 *   @file
-*   Administration page callbacks for shiny module
+*   Administration page callbacks for annotate module
 */
 
 /**
-*   Form builder
+*   Form builder. Configre annotations
 */
 
-function shiny_admin_settings(){
+function annotate_admin_settings(){
     //Get an array of node types with internal names as keys and 
     //"friendly names" as values
     //array('page' => 'basic page',)
