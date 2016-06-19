@@ -1,6 +1,6 @@
 name = Annotate
 description = "Setting path: admin/config/content/annotate/settings"
-package = User Interface
+package = User Interface 233
 core = 7.x
 files[] = annoatte.module
 files[] = annotate.install 

@@ -17,52 +17,64 @@ function shiny_admin_settings(){
         $options[$node_type->type] = $node_type->name;
     }
 
-    $form['annotate_node_types'] = array(
+    $form['shiny_node_types'] = array(
         '#type' => 'checkboxes',
-        '#title' => t('Users can do these'),
+        '#title' => t('User can add shiny-frame to these content types'),
         '#options' => $options,
-        // '#default_value' => variable_get('annotate_node_types', array('page')),
-        '#description' => t('A text feild will be availae')
+        '#default_value' => variable_get('shiny_node_types', array('page')),
+        '#description' => t('Create a gateway to shiny application')
     );
-    $form['#submit'][] = 'annotate_admin_settings_submit';
+    $form['#submit'][] = 'shiny_admin_settings_submit';
     return system_settings_form($form);
 }
 
 
-/* Process annotation settings submission */
+/* Process shiny settings submission */
 
-function annotate_admin_settings_submit($form, $form_state){
+function shiny_admin_settings_submit($form, $form_state){
 
-    foreach ($form_state['values']['annotate_node_types'] as $key => $value) {
+    /*
+        Loop through each of the content type checkboxes 
+        shown on the form.
+    */
+    foreach ($form_state['values']['shiny_node_types'] as $key => $value) {
+//If the check box for a content type is unchecked, look to see whether 
+//this content type has the shiny field attached to it using the
+//field_info_instance(). If it does then we have to remove the 
+//shiny field as the administrator has unchecked the box
+//  field_info_instance($entity_type, $field_name, $bundle_name)
+// Returns an array of instance data for a specific field and bundle.
+
         if(!$value){
-            $instance = field_info_instance('node', 'annotation', $key);
+            $instance = field_info_instance('node', 'shiny', $key);
             if(!empty($instance)){
-                field_delete_field($instance);
-                watchdog('Annotation', 'Deleted annotation field from content type %key', array('%key' => $key));
+                field_delete_instance($instance);
+                //watchdog($type, $message, $variables = array(), $severity = WATCHDOG_NOTICE, $link = NULL) Logs a system message.
+                watchdog('Shiny', 'Deleted shiny field from content type %key', array('%key' => $key));
             }
         }
         else 
         {
-            $instance = field_info_instance('node', 'annotation', $key);
+        // If the check box for a content type is checked, look to see
+        // whether the field is associated with that content type.
+        // if not then add the shiny field to the content type
+            $instance = field_info_instance('node', 'shiny', $key);
             if(empty($instance)){
                 $instance = array(
-                    'field_name' => 'annotation',
+                    'field_name' => 'shiny',
                     'entity_type' => 'node',
                     'bundle' => $key,
-                    'label' => t('Annotation'),
+                    'label' => t('Shiny'),
                     'widget_type' => 'text_textarea_with_summary',
                     'settings' => array ('display_summary' => TRUE),
                     'display' => array(
                         'default'=> array(
                             'type' => 'text_default',
-                        ), //default
-                        'teaser' => array(
-                            'type'=> 'text_summary_or_trimmed',
-                        ), //teaser
+                        ), //default  
                     ),//dipslay
                 );
                 $instance = field_create_instance($instance);
-                watchdog('Annotation', 'Added annotation field to content type: %key', array('%key' => $key) );
+                watchdog('Shiny', 'Added shiny field to content type: %key', array('%key' => $key) );
 
             }
 

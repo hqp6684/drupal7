@@ -1,87 +1,123 @@
 <?php
 
-/*
-    hook_block 
-    Create custom block for shiny
-*/
-function shiny_block_info() {
-  $blocks['shiny'] = array(
-    // The name that will appear in the block list.
-    'info' => t('Shiny main content'),
-    // Default setting.
-    //https://api.drupal.org/api/drupal/includes!common.inc/group/block_caching/7.x
-    'cache' => DRUPAL_CACHE_PER_ROLE,
-  );
-  return $blocks;
-}
-
 
 
 
 /**
- * Implements hook_block_view().
- * 
- * Prepares the contents of the block.
- */
-function shiny_block_view($delta = '') {
+Hook_menu()
+https://api.drupal.org/api/drupal/modules%21system%21system.api.php/function/hook_menu/7.x
+*/
 
-    //path to modules libs folder
-    //TODO: \ for linux based OS ? 
-    $libs_path = drupal_get_path('module', 'shiny') . '/libs/';
+function shiny_menu(){
+    $items['admin/config/shiny'] = array(
+        'title' => 'Shiny',
+        'description' => 'Adjust shiny options',
+        'position' => 'right',
+        'page callback' => 'system_admin_menu_block_page',
+        'access arguments'=> array('administer site configuration'),
+        'file' => 'system.admin.inc',
+        'file path' => drupal_get_path('module', 'system'),
+    );
 
-    //delta is the name of blocks passed in from drupal
-    //can also use if($delta == 'name of the block')
-        switch ($delta) {
-        case 'shiny':
-            $block['subject'] = t('Shiny Main Content');
-            /*
-                Customize the block content   
-            */
-            $block['content'] = array(
+    $items['admin/config/shiny/settings'] = array (
+        'title' => 'Shiny Settings',
+        'description' => 'Adjust shiny settings',
+        'page callback' => 'drupal_get_form',
+        //go to shiny.admin.inc
+        'page arguments'=> array('shiny_admin_settings'),
+        'access arguments'=> array('administer site configuration'),
+        'type' => MENU_NORMAL_ITEM,
+        'file' => 'shiny.admin.inc',
+    );
 
-                '#attached' => array (
+    return $items;
 
-                    'js' => array(
-                        //angularjs
-                        $libs_path.'js/angular.min.js',
-                        //shiny angular app
-                        $libs_path.'app/app.module.js',
-                        // $libs_path.'app/shiny/shiny.module.js',
-                        // $libs_path.'app/shiny/shiny.component.js',
-                        // $libs_path.'app/shiny/shiny.service.js',
-                        //v1.2
-                        $libs_path.'app/cShiny/cShiny.js',
-
-                    ),// end js array
-
-                    'css' => array()
-                ), //attached 
-                '#markup' => generate_block_content($libs_path)
-                // '#markup' => t('shiny block main content asdfsdf')
-            );
-            
-        return $block;
-  }
-  
 }
+
 
 
 // /*
-//     Test
+//     hook_block 
+//     Create custom block for shiny
 // */
-function generate_block_content($libs_path){
-    $html_content = '';
+// function shiny_block_info() {
+//   $blocks['shiny'] = array(
+//     // The name that will appear in the block list.
+//     'info' => t('Shiny main content'),
+//     // Default setting.
+//     //https://api.drupal.org/api/drupal/includes!common.inc/group/block_caching/7.x
+//     'cache' => DRUPAL_CACHE_PER_ROLE,
+//   );
+//   return $blocks;
+// }
 
-    $html_content .= $libs_path. '
 
-    <p> This is the main content of shiny block</p>
 
-    <div ng-app="devApp"> <main-component> </main-component> </div>
 
-    ';
+// /**
+//  * Implements hook_block_view().
+//  * 
+//  * Prepares the contents of the block.
+//  */
+// function shiny_block_view($delta = '') {
 
-    return $html_content;
-}
+//     //path to modules libs folder
+//     //TODO: \ for linux based OS ? 
+//     $libs_path = drupal_get_path('module', 'shiny') . '/libs/';
+
+//     //delta is the name of blocks passed in from drupal
+//     //can also use if($delta == 'name of the block')
+//         switch ($delta) {
+//         case 'shiny':
+//             $block['subject'] = t('Shiny Main Content');
+//             /*
+//                 Customize the block content   
+//             */
+//             $block['content'] = array(
+
+//                 '#attached' => array (
+
+//                     'js' => array(
+//                         //angularjs
+//                         $libs_path.'js/angular.min.js',
+//                         //shiny angular app
+//                         $libs_path.'app/app.module.js',
+//                         // $libs_path.'app/shiny/shiny.module.js',
+//                         // $libs_path.'app/shiny/shiny.component.js',
+//                         // $libs_path.'app/shiny/shiny.service.js',
+//                         //v1.2
+//                         $libs_path.'app/cShiny/cShiny.js',
+
+//                     ),// end js array
+
+//                     'css' => array()
+//                 ), //attached 
+//                 '#markup' => generate_block_content($libs_path)
+//                 // '#markup' => t('shiny block main content asdfsdf')
+//             );
+            
+//         return $block;
+//   }
+  
+// }
+
+
+// // /*
+// //     Test
+// // */
+// function generate_block_content($libs_path){
+//     $html_content = '';
+
+//     $html_content .= $libs_path. '
+
+//     <p> This is the main content of shiny block</p>
+
+//     <div ng-app="devApp"> <main-component> </main-component> </div>
+
+//     ';
+
+//     return $html_content;
+// }
 
 
 
