@@ -71,6 +71,7 @@ function shiny_schema(){
 
 
 function annotate_uninstall(){
+
     watchdog('Shiny Module', 'Uninstalling module and deleting its instances');
 
     $types = node_type_get_types();

@@ -48,7 +48,9 @@ function shiny_admin_settings_submit($form, $form_state){
         if(!$value){
             $instance = field_info_instance('node', 'shiny', $key);
             if(!empty($instance)){
-                field_delete_instance($instance);
+                //IF field_cleanup = true, it will cause a problem when re-create field
+                //https://www.drupal.org/node/1080210
+                field_delete_instance($instance, $field_cleanup = FALSE);
                 //watchdog($type, $message, $variables = array(), $severity = WATCHDOG_NOTICE, $link = NULL) Logs a system message.
                 watchdog('Shiny', 'Deleted shiny field from content type %key', array('%key' => $key));
             }
