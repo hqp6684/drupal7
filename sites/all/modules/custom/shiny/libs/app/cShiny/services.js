@@ -5,7 +5,7 @@
 * Description
 */
 
-cShiny.factory('Api', ['$http', function($http){
+angular.module('cShiny').factory('Api', ['$http', function($http){
 
     return {
         test : "test",
