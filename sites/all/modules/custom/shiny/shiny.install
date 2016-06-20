@@ -15,7 +15,60 @@ function shiny_install(){
         );
         $field = field_create_field($field);
     }
+
+
+
 }
+
+
+function shiny_schema(){
+    $schema['shiny'] = array(
+        'description' => 'Stores shiny configurations',
+        'fields' => array(
+            //fields
+            'sid'=> array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE,
+                'default' => 0,
+                'description' => t('Shiny id')
+            ),            
+            'nid'=> array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE,
+                'default' => 0,
+                'description' => t('Node id')
+            ),
+            'nua' => array(
+                'type' => 'text',
+                'size' => 'tiny',
+                'not null' => FALSE,
+                'description' => t('Node url alias')
+            ),
+            'data' => array(
+                'type' => 'text',
+                'size' => 'medium',
+                'not null' => FALSE,
+                'description' => t('Shiny url')                
+            )
+
+        ), //fields
+        'primary key' => array('sid'), //primary key
+        'unique keys' => array(
+            'nid' => array('nid'),
+        ),
+        'indexes' => array(
+            'sid' => array('sid'),
+        ),
+    ); //$schema
+
+    return $schema;
+
+
+}
+
+
 
 function annotate_uninstall(){
     watchdog('Shiny Module', 'Uninstalling module and deleting its instances');
@@ -31,6 +84,8 @@ function annotate_uninstall(){
     if($field){
         field_delete_field('shiny');
     }
+
+    variable_del('shiny_nodetypes');
 }
 
 function shiny_delete_shiny($type){

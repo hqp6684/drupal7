@@ -8,7 +8,7 @@
 // < is for one-way bindings when we just want to read a value from a parent scope and not update it;
 // @ is for string parameters;
 // & is for callbacks in case your component needs to output something to its parent scope.
-angular.module('cShiny', [])
+var cShiny = angular.module('cShiny', [])
     .component('mainComponent', {
 
                 //define
@@ -25,7 +25,7 @@ angular.module('cShiny', [])
         },
         bindings: {},
         //transclude : true,
-        controller : MainComponentController,
+        controller : 'MainComponentController',
 
     })
 
@@ -46,13 +46,13 @@ angular.module('cShiny', [])
     });
 
 
-function MainComponentController (){
-    var ctrl = this;
+cShiny.controller('MainComponentController', ['$scope', function($scope){
+    var ctrl = $scope;
 
     // TODO : Data Block model
     ctrl.dataBlock = {
-        compound : '',
-        dataBlock : ''
+        compound : 'dsfa',
+        dataBlock : 'sdf'
     };
 
     //Pass data block to child component for shiny initialization
@@ -60,8 +60,25 @@ function MainComponentController (){
         //childComponent is initialized in the template file
         //It is used to communicate with child component
         ctrl.childComponent.update(ctrl.dataBlock);
-    }
-}// Main component controller
+    }   
+}]);
+
+// function MainComponentController (cShiny.Api){
+//     var ctrl = this;
+
+//     // TODO : Data Block model
+//     ctrl.dataBlock = {
+//         compound : 'asdf',
+//         dataBlock : '3434'
+//     };
+
+//     //Pass data block to child component for shiny initialization
+//     ctrl.updateData = function(){
+//         //childComponent is initialized in the template file
+//         //It is used to communicate with child component
+//         ctrl.childComponent.update(ctrl.dataBlock);
+//     }
+// }// Main component controller
 
 
 function ChildCC () {
@@ -93,7 +110,7 @@ function ChildCC () {
 
     //Datablock is passed from main component
     function updateIframe (dataBlock) {
-        var baseUrl = 'http://127.0.0.1:3037/?';
+        var baseUrl = 'https://huypham.shinyapps.io/exApp/?';
 
         var data = extractDataBlock(dataBlock);
 
@@ -110,12 +127,17 @@ function ChildCC () {
         var data = '';
 
         angular.forEach( argument, function(key, value) {
-            data += key + '=' + value + ',';
+            data += key + '=' + value + '&';
         });
         //slice off the trailing comma
         data = data.slice(0,-1);
 
         return data;
+    }
+
+
+    function testRunPhp () {
+         // body...  
     }
 
 }

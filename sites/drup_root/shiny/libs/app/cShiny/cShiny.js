@@ -89,7 +89,7 @@ function ChildCC () {
 
     //Datablock is passed from main component
     function updateIframe (dataBlock) {
-        var baseUrl = 'http://127.0.0.1:3037/?';
+        var baseUrl = 'https://huypham.shinyapps.io/exApp/?';
 
         var data = extractDataBlock(dataBlock);
 
@@ -106,7 +106,7 @@ function ChildCC () {
         var data = '';
 
         angular.forEach( argument, function(key, value) {
-            data += key + '=' + value + ',';
+            data += key + '=' + value + '&';
         });
         //slice off the trailing comma
         data = data.slice(0,-1);
