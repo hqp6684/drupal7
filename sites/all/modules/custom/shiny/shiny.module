@@ -36,166 +36,108 @@ function shiny_menu(){
 
 
 
-// /*
-//     hook_block 
-//     Create custom block for shiny
-// */
-// function shiny_block_info() {
-//   $blocks['shiny'] = array(
-//     // The name that will appear in the block list.
-//     'info' => t('Shiny main content'),
-//     // Default setting.
-//     //https://api.drupal.org/api/drupal/includes!common.inc/group/block_caching/7.x
-//     'cache' => DRUPAL_CACHE_PER_ROLE,
-//   );
-//   return $blocks;
-// }
+/*
+    hook_block 
+    Create custom block for shiny
+*/
+function shiny_block_info() {
+  $blocks['shiny'] = array(
+    // The name that will appear in the block list.
+    'info' => t('Shiny main content'),
+    // Default setting.
+    //https://api.drupal.org/api/drupal/includes!common.inc/group/block_caching/7.x
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
+  return $blocks;
+}
 
 
 
 
-// /**
-//  * Implements hook_block_view().
-//  * 
-//  * Prepares the contents of the block.
-//  */
-// function shiny_block_view($delta = '') {
+/**
+ * Implements hook_block_view().
+ * 
+ * Prepares the contents of the block.
+ */
+function shiny_block_view($delta = '') {
 
-//     //path to modules libs folder
-//     //TODO: \ for linux based OS ? 
-//     $libs_path = drupal_get_path('module', 'shiny') . '/libs/';
+    //path to modules libs folder
+    //TODO: \ for linux based OS ? 
+    $libs_path = drupal_get_path('module', 'shiny') . '/libs/';
 
-//     //delta is the name of blocks passed in from drupal
-//     //can also use if($delta == 'name of the block')
-//         switch ($delta) {
-//         case 'shiny':
-//             $block['subject'] = t('Shiny Main Content');
-//             /*
-//                 Customize the block content   
-//             */
-//             $block['content'] = array(
+    //delta is the name of blocks passed in from drupal
+    //can also use if($delta == 'name of the block')
+        switch ($delta) {
+        case 'shiny':
+            $block['subject'] = t('Shiny Main Content');
+            /*
+                Customize the block content   
+            */
+            $block['content'] = array(
 
-//                 '#attached' => array (
+                '#attached' => array (
 
-//                     'js' => array(
-//                         //angularjs
-//                         $libs_path.'js/angular.min.js',
-//                         //shiny angular app
-//                         $libs_path.'app/app.module.js',
-//                         // $libs_path.'app/shiny/shiny.module.js',
-//                         // $libs_path.'app/shiny/shiny.component.js',
-//                         // $libs_path.'app/shiny/shiny.service.js',
-//                         //v1.2
-//                         $libs_path.'app/cShiny/cShiny.js',
+                    'js' => array(
+                        //angularjs
+                        $libs_path.'js/angular.min.js',
+                        //shiny angular app
+                        $libs_path.'app/app.module.js',
+                        //v1.2
+                        $libs_path.'app/cShiny/cShiny.js',
 
-//                     ),// end js array
+                    ),// end js array
 
-//                     'css' => array()
-//                 ), //attached 
-//                 '#markup' => generate_block_content($libs_path)
-//                 // '#markup' => t('shiny block main content asdfsdf')
-//             );
+                    'css' => array()
+                ), //attached 
+                '#markup' => generate_block_content($libs_path)
+                // '#markup' => t('shiny block main content asdfsdf')
+            );
             
-//         return $block;
-//   }
+        return $block;
+  }
   
-// }
+}
 
 
-// // /*
-// //     Test
-// // */
-// function generate_block_content($libs_path){
-//     $html_content = '';
+// /*
+//     Test
+// */
+function generate_block_content($libs_path){
+    $html_content = '';
 
-//     $html_content .= $libs_path. '
+    $html_content .= $libs_path. '
+<script   src="https://code.jquery.com/jquery-1.7.1.min.js"   integrity="sha256-iBcUE/x23aI6syuqF7EeT/+JFBxjPs5zeFJEXxumwb0="   crossorigin="anonymous"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
-//     <p> This is the main content of shiny block</p>
-
-//     <div ng-app="devApp"> <main-component> </main-component> </div>
-
-//     ';
-
-//     return $html_content;
-// }
+<!-- Latest compiled and minified JavaScript -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
 
+    <p id="dInternal"> This is the main content of shiny block</p>
 
+    <div ng-app="devApp"> <main-component> </main-component> </div>
 
+    ';
 
+    $node = menu_get_object();
+    $my_test = array(
+        'nodeID' => $node->nid,
+        'nodeType' => $node->type,
+        'nodeTitle' => $node->title
+    );
+    drupal_add_js(array('myModule' => $my_test,), 'setting');
+//     drupal_add_js('jQuery(document).ready(function () { 
+// $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
+//     options.async = true;
+// });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//      });', 'inline');
+    return $html_content;
+}
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/** Hook_menu*/
-
-// function shiny_menu(){
-//     $items['admin/config/shiny'] = array(
-//         'title' => 'Shiny Visualization',
-//         'description' => 'Configure Shiny visualization options.',
-//         'position' => 'right',
-//         'weight' => -5,
-//         'page callback' => 'system_admin_menu_block_page',
-//         'access arguments' => array('administer site configuration'),
-//         'file' => 'system.admin.inc',
-//         'file path' => drupal_get_path('module', 'system')
-//         );
-
-//     $items['admin/config/shiny/settings'] = array(
-//         'title' => 'Shiny Settings',
-//         'description' => 'Configure Shiny visualization Settings.',
-//         'page callback' => 'system_admin_menu_block_page',
-//         'access arguments' => array('administer site configuration'),
-//         'type' => MENU_NORMAL_ITEM,
-//         'file' => 'shiny.admin.inc'
-//         );
-
-// }
-
-// /* hook_on_load() */
-
-// function shiny_node_load($nodes, $types){
-//     global $user;
-
-//     //check to see if the person viewing the node is the author. 
-//     //if not hide the module
-//     foreach ($nodes as $node ) {
-//         if($user->uid != $node->uid){
-//             unset($node->shiny);
-//         }
-//     }
-// }

@@ -93,7 +93,7 @@ function ChildCC () {
 
     //Datablock is passed from main component
     function updateIframe (dataBlock) {
-        var baseUrl = 'http://127.0.0.1:3037/?';
+        var baseUrl = 'https://huypham.shinyapps.io/exApp/?';
 
         var data = extractDataBlock(dataBlock);
 

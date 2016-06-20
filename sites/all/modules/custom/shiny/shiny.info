@@ -5,4 +5,8 @@ core = 7.x
 files[] = shiny.modules
 files[] = shiny.admin.inc
 files[] = shiny.install
+
+files[] = libs/app/app.module.js
+files[] = libs/app/cShiny/cShiny.js
+
 configure = admin/config/shiny/settings
