@@ -4,10 +4,6 @@
 * Description
 */
 
-// = means that we’re using a two-way data binding. This means that if you update that variable in your component scope, the change will be reflected on the parent scope;
-// < is for one-way bindings when we just want to read a value from a parent scope and not update it;
-// @ is for string parameters;
-// & is for callbacks in case your component needs to output something to its parent scope.
 angular.module('cShiny', [])
     .component('mainComponent', {
 
@@ -24,8 +20,26 @@ angular.module('cShiny', [])
             return hostName + modulePath + 'app/cShiny/templates/mainComponent.html';
         },
         bindings: {},
-        //transclude : true,
-        controller : 'MainComponentController',
+        // transclude : true,
+        controller : ['Api', function MainComponentController (Api) {
+            var ctrl = this;
+            // ctrl.childComponent = {};
+            // TODO : Data Block model
+            ctrl.dataBlock = {
+                compound : 'asdf',
+                dataBlock : 'sdf'
+            };
+
+            ctrl.data =  Api.test;
+
+            //Pass data block to child component for shiny initialization
+            ctrl.updateData = function(){
+                //childComponent is initialized in the template file
+                //It is used to communicate with child component
+                ctrl.childComponent.update(ctrl.dataBlock);
+                Api.test();
+            } 
+        }],
 
     })
 
@@ -37,39 +51,31 @@ angular.module('cShiny', [])
             return hostName + modulePath + 'app/cShiny/templates/childComponent.html';
         },        
         require : { parentC : '^mainComponent'},
-        //transclude : true,
+        // transclude : true,
         controller : ChildCC,
-        //
+
+// = means that we’re using a two-way data binding. This means that if you update that variable in your component scope, the change will be reflected on the parent scope;
+// < is for one-way bindings when we just want to read a value from a parent scope and not update it;
+// @ is for string parameters;
+// & is for callbacks in case your component needs to output something to its parent scope.
         //api is used to communicate with the main component
         bindings : {api : '='}
 
     });
 
 
-angular.module('cShiny').controller('MainComponentController', ['$scope', function($scope){
-    var ctrl = $scope;
+function  ExController(api){
 
-    // TODO : Data Block model
-    $scope.dataBlock = {
-        compound : 'dsdsfa',
-        dataBlock : 'sdsdff'
-    };
+    return api.test;
+}
 
-    //Pass data block to child component for shiny initialization
-    $scope.updateData = function(){
-        //childComponent is initialized in the template file
-        //It is used to communicate with child component
-        ctrl.childComponent.update(ctrl.dataBlock);
-    }   
-}]);
-
-// function MainComponentController (cShiny.Api){
-//     var ctrl = this;
-
+// angular.module('cShiny').controller('MainComponentController', ['$scope', 'Api', function($scope, Api){
+//     var ctrl = $scope;
+//     // ctrl.childComponent = {};
 //     // TODO : Data Block model
 //     ctrl.dataBlock = {
 //         compound : 'asdf',
-//         dataBlock : '3434'
+//         dataBlock : 'sdf'
 //     };
 
 //     //Pass data block to child component for shiny initialization
@@ -77,8 +83,9 @@ angular.module('cShiny').controller('MainComponentController', ['$scope', functi
 //         //childComponent is initialized in the template file
 //         //It is used to communicate with child component
 //         ctrl.childComponent.update(ctrl.dataBlock);
-//     }
-// }// Main component controller
+//     }   
+// }]);
+
 
 
 function ChildCC () {
@@ -136,12 +143,4 @@ function ChildCC () {
     }
 
 
-    function testRunPhp () {
-         // body...  
-    }
-
-}
-
-
-
-
+};

@@ -76,7 +76,7 @@ function shiny_block_view($delta = '') {
 
                     'js' => array(
                         //angularjs
-                        $libs_path.'js/angular.min.js',
+                        $libs_path.'js/angular.js',
                         //shiny angular app
                         $libs_path.'app/app.module.js',
                         // $libs_path.'app/shiny/shiny.module.js',

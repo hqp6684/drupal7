@@ -1,7 +1,29 @@
 
+//NOTE: 
+//Have to define controller's scope by using ng-controller : ie <div ng-controller="MainCom.."> </div>
+// Because scope is defined using ng-controller, data-binding doesn't need $ctrl
+
+// angular.module('cShiny').controller('MainComponentController', ['$scope', 'Api', function($scope, Api){
+//     var ctrl = $scope;
+//     // ctrl.childComponent = {};
+//     // TODO : Data Block model
+//     ctrl.dataBlock = {
+//         compound : 'asdf',
+//         dataBlock : 'sdf'
+//     };
+
+//     //Pass data block to child component for shiny initialization
+//     ctrl.updateData = function(){
+//         //childComponent is initialized in the template file
+//         //It is used to communicate with child component
+//         ctrl.childComponent.update(ctrl.dataBlock);
+//     }   
+// }]);
 
 
-// cShiny.controller('ChildCC', ['$scope', function ($scope) {
+
+
+// angular.module('cShiny').controller('ChildCC', ['$scope', function ($scope) {
 //     var ctrl = $scope;
 //     //True = show, false = hidden
 //     ctrl.state = false;
