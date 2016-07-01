@@ -30,15 +30,33 @@ angular.module('cShiny', [])
                 dataBlock : 'sdf'
             };
 
-            ctrl.data =  Api.test;
 
             //Pass data block to child component for shiny initialization
             ctrl.updateData = function(){
                 //childComponent is initialized in the template file
                 //It is used to communicate with child component
                 ctrl.childComponent.update(ctrl.dataBlock);
-                Api.test();
-            } 
+            };
+
+            //Get site map
+            ctrl.getSiteMap = function(){
+                    Api.getSiteMap().then(
+                    function success(res){ console.log(res.data); }, 
+                    function failed(res){ console.log('no data');}
+                );
+            };
+
+            
+
+             
+            ctrl.getSpaceParents = function (){
+
+                Api.getSpaceParents().then(
+                    function(res){
+                        ctrl.spaceParents = res.resData;
+                    }
+                );
+            };
         }],
 
     })
@@ -54,37 +72,47 @@ angular.module('cShiny', [])
         // transclude : true,
         controller : ChildCC,
 
-// = means that we’re using a two-way data binding. This means that if you update that variable in your component scope, the change will be reflected on the parent scope;
-// < is for one-way bindings when we just want to read a value from a parent scope and not update it;
-// @ is for string parameters;
-// & is for callbacks in case your component needs to output something to its parent scope.
-        //api is used to communicate with the main component
+        // = means that we’re using a two-way data binding. This means that if you update that variable in your component scope, the change will be reflected on the parent scope;
+        // < is for one-way bindings when we just want to read a value from a parent scope and not update it;
+        // @ is for string parameters;
+        // & is for callbacks in case your component needs to output something to its parent scope.
+                //api is used to communicate with the main component
         bindings : {api : '='}
+     })
 
+    .component('newblockComponent', {
+        templateUrl : function(){
+            var hostName = document.location.href.slice(0,24);
+            var modulePath = '/sites/all/modules/custom/shiny/libs/'
+            return hostName + modulePath + 'app/cShiny/templates/newBlockComponent.html';
+        },
+        controller : ['Api', function (Api){
+            var ctrl = this;
+
+            ctrl.datablock = {
+                nid : 0,
+                datablock_type : '',
+                datablock_name : '',
+            };
+
+            ctrl.$onInit = function(){
+                Api.getSpaceParents().then(
+                    function(res){
+                        console.log(res);
+                        ctrl.spaceParents = res;
+                    }
+                );
+            };
+
+            ctrl.submit = function(){
+                Api.postDatablock(ctrl.datablock).then(function(res){
+                    console.log(res);
+                });
+            };
+        }],
+
+        //  
     });
-
-
-function  ExController(api){
-
-    return api.test;
-}
-
-// angular.module('cShiny').controller('MainComponentController', ['$scope', 'Api', function($scope, Api){
-//     var ctrl = $scope;
-//     // ctrl.childComponent = {};
-//     // TODO : Data Block model
-//     ctrl.dataBlock = {
-//         compound : 'asdf',
-//         dataBlock : 'sdf'
-//     };
-
-//     //Pass data block to child component for shiny initialization
-//     ctrl.updateData = function(){
-//         //childComponent is initialized in the template file
-//         //It is used to communicate with child component
-//         ctrl.childComponent.update(ctrl.dataBlock);
-//     }   
-// }]);
 
 
 
@@ -94,8 +122,6 @@ function ChildCC () {
     ctrl.state = false;
 
     ctrl.$onInit = function () {
-        //Init iframe
-        iframeInit();
         //init api <- to communicate with main component
         ctrl.api = {};
         //api = mainComopnent.controller.childComponent
@@ -103,27 +129,22 @@ function ChildCC () {
 
     }
 
-    //Iframe model
-    ctrl.frame = {
-        wrapper : document.getElementById("shinyIframeContainer"),
-        iFrame  : document.createElement('iframe')
+
+    ctrl.fullscreen = function(){
+
     };
 
-    function iframeInit (){    
-        ctrl.frame.iFrame.width = '60%';
-        ctrl.frame.iFrame.height = '500';
-        ctrl.frame.wrapper.appendChild(ctrl.frame.iFrame);
-    }
 
     //Datablock is passed from main component
     function updateIframe (dataBlock) {
+        var iframe = document.getElementById("shinyIframe")
         var baseUrl = 'https://huypham.shinyapps.io/exApp/?';
 
         var data = extractDataBlock(dataBlock);
 
         url = baseUrl + data;
         //set <iframe src="">
-        ctrl.frame.iFrame.src = url ;
+        iframe.src = url ;
         //show the frame 
         //TODO catch if the connection failed 
         ctrl.state = true;  
@@ -143,4 +164,22 @@ function ChildCC () {
     }
 
 
-};
+ };
+
+// var Node = function (id, title, url, parents) {
+//      this.nid = id;
+//      this.title = title;
+//      this.url = url;
+//      this.spaceParents = parents
+// }
+
+var SpaceParents = function (parents) {
+     this.parents = [];
+
+}
+
+
+var Node = function (nid, title) {
+                     this.nid = nid;
+                     this.title = title; 
+                }

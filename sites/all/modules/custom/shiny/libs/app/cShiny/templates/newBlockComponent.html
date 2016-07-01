@@ -1,0 +1,32 @@
+
+
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum tempora quasi tempore deserunt delectus minus, voluptatibus ipsa earum reiciendis rem quidem vero, saepe veritatis animi aut cupiditate voluptas. Veritatis, voluptate.
+</p>
+
+<div>
+
+
+<!--   <ol >
+    <li ng-repeat="n in $ctrl.spaceParents">{{n.nid}} : {{n.title}}</li>
+  </ol>  -->
+
+  <form>
+  <h3>Confirm data block type</h3>
+    <div class="radio" ng-repeat="n in $ctrl.spaceParents">
+      <label>
+        <input type="radio" ng-model="$ctrl.datablock.type" value="{{n.title}}" name="data_type">
+        {{n.title}}
+      </label>
+    </div>
+    <h3>Confirm data block name</h3>
+    <div class="radio" ng-repeat="n in $ctrl.spaceParents">
+      <label>
+        <input type="radio" ng-model="$ctrl.datablock.name" value="{{n.title}}" name="data_name">
+        {{n.title}}
+      </label>
+    </div>
+    <button type="submit" class="btn btn-primary" ng-click="$ctrl.submit()" ng-show="$ctrl.datablock.name != $ctrl.datablock.type">Submit</button>
+  </form>
+
+
+</div>

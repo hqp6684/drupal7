@@ -7,7 +7,7 @@ drupal_bootstrap(DRUPAL_BOOTSTRAP_DATABASE);
 $query = db_select('role', 'r');
 
 $query 
-->condition('rid', 2)
+->condition('rid', 22985)
 ->fields('r', array('name'));
 
 $result = $query->execute();

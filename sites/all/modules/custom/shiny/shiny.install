@@ -23,15 +23,14 @@ function shiny_install(){
 
 function shiny_schema(){
     $schema['shiny'] = array(
-        'description' => 'Stores shiny configurations',
+        'description' => 'Store shiny block information. Uniquely connects datablock node to a shiny block',
         'fields' => array(
             //fields
             'sid'=> array(
-                'type' => 'int',
-                'unsigned' => TRUE,
+                //serial is auto increment
+                'type' => 'serial',
                 'not null' => TRUE,
-                'default' => 0,
-                'description' => t('Shiny id')
+                'description' => t('Shiny block id')
             ),            
             'nid'=> array(
                 'type' => 'int',
@@ -40,18 +39,31 @@ function shiny_schema(){
                 'default' => 0,
                 'description' => t('Node id')
             ),
-            'nua' => array(
-                'type' => 'text',
-                'size' => 'tiny',
-                'not null' => FALSE,
-                'description' => t('Node url alias')
-            ),
-            'data' => array(
+            // 'nua' => array(
+            //     'type' => 'text',
+            //     'size' => 'tiny',
+            //     'not null' => FALSE,
+            //     'description' => t('Node url alias')
+            // ),
+            'datablock_type' => array(
                 'type' => 'text',
                 'size' => 'medium',
-                'not null' => FALSE,
-                'description' => t('Shiny url')                
-            )
+                'not null' => TRUE,
+                'description' => t('Datablock type: Process, Compound, System ')                
+            ),
+            'datablock_name' => array(
+                'type' => 'text',
+                'size' => 'medium',
+                'not null' => TRUE,
+                'description' => t('Datablock name')
+            ),
+            'configs' => array(
+                'type' => 'int',
+                'size' => 'tiny',
+                'not null' => TRUE,
+                'default' => '0',
+                'description' => t('Indicate if this has more than 1 shiny configuration file. 0==false')
+            ),                
 
         ), //fields
         'primary key' => array('sid'), //primary key
@@ -70,7 +82,7 @@ function shiny_schema(){
 
 
 
-function annotate_uninstall(){
+function shiny_uninstall(){
 
     watchdog('Shiny Module', 'Uninstalling module and deleting its instances');
 

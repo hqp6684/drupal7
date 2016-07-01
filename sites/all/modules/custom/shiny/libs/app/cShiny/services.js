@@ -5,7 +5,7 @@
 * Description
 */
 
-angular.module('cShiny').factory('Api', ['$http', function($http){
+angular.module('cShiny').factory('Api', ['$http', '$log', '$q', function($http, $log, $q){
 
     return {
         test : function (argument) {
@@ -29,6 +29,67 @@ angular.module('cShiny').factory('Api', ['$http', function($http){
                 console.log(res);
             });
         },
+
+
+        getSiteMap : function (){
+            var request = $http({
+                method: 'get',
+                // url : 'http://localhost/drupal7/sites/all/modules/custom/shiny/drupal_root_map.json',
+                url : 'http://localhost/drupal_root/restAPI.php/abc/123'
+            });
+
+            return request;
+
+            
+        },
+
+        getSpaceParents : function(){
+            // var spaceParents = Drupal.settings.Api.space_parents;
+            var deferred = $q.defer();
+
+            var request = $http({
+                method : 'get',
+                url : 'http://localhost/drupal_root/restAPI.php/node/123',
+            });
+
+            request.then(function (res) {
+                
+                var log = [];
+
+                angular.forEach(res.data, function (value, key) {
+                        this.push(new Node(key,value)); 
+                    },
+                    log
+                );
+                deferred.resolve(log);
+                
+
+            });
+
+            return deferred.promise;
+        },
+
+        postDatablock : function(datablock){
+
+            var deferred = $q.defer();
+
+            $http({
+                method : 'POST',
+                url : (window.location.origin +'/shinyApi/register'),
+
+            }).then(function(err,res){
+                if(err){
+                    console.error(err);
+                }
+
+                deferred.resolve(res.statusText);
+            });
+
+            return deferred.promise;
+        },
+
+
+
     };
 }])
 

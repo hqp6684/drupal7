@@ -1,8 +1,18 @@
 
 
-<div ng-show="$ctrl.state">
+<div ng-show="$ctrl.state" ng-init="isFullscreen = false">
 
-  <div id="shinyIframeContainer"></div>
+  <div class="iframe_container" ng-class="{iframe_container_fullscreen : isFullscreen}" > 
+    <div ng-click="isFullscreen = !isFullscreen">
+
+      <h2 style="background: white;">Full Screen</h2>
+
+      <iframe id="shinyIframe" frameborder="1" style="overflow: hidden; height: 100%;
+        width: 100%; position: absolute;" height="100%" width="100%"></iframe>
+
+    </div>
+    
+  </div>
 
 </div>
 

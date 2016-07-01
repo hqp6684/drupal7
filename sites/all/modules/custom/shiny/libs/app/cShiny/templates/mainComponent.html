@@ -1,5 +1,13 @@
 
 <div> 
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+
   <form>
     <div class="form-group">
       <label for="$ctrl.compound">Compound</label>
@@ -11,10 +19,19 @@
     </div>
 
     <button type="submit" ng-click="$ctrl.updateData()" class="btn btn-default">Submit</button>
+    <button type="submit" ng-click="$ctrl.getSiteMap()" class="btn btn-default">Get Site Map</button>
+    <button type="submit" ng-click="$ctrl.getSpaceParents()" class="btn btn-default">Display Site Map</button>
+
   </form>
   <!-- end form -->
 </div>
 
+<form>
+  <div class="form-group" ng-repeat="node in $ctrl.spaceParents" ng-init="count = 0">
 
+    <label for="node.nid">{{'Parent ' + ($ctrl.spaceParents.indexOf(node))}}</label>
+    <input type="text" ng-model="node.title"class="form-control" id="node.nid">
+  </div>
+</form>
 
 <child-component api="$ctrl.childComponent"> </child-component>

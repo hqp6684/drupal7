@@ -30,9 +30,32 @@ function shiny_menu(){
         'file' => 'shiny.admin.inc',
     );
 
+
+    $items['shinyApi'] = array(
+        'title' => 'Shiny API gateway: register new block',
+        'page callback' => 'shiny_api_handler',
+        'access arguments' => array('access content'),
+        'type' => MENU_CALLBACK,
+        'file' => 'shiny.api.inc',
+        
+    );
+    //page callback for post request
+    $items['shinyApi/register'] = array(
+        'title' => 'Shiny API gateway: register new block',
+        'page callback' => 'shiny_register_new_block',
+        'access arguments' => array('access content'),
+        'type' => MENU_CALLBACK,
+        'file' => 'shiny.api.inc',
+        
+    );
+
+
+
     return $items;
 
 }
+
+
 
 
 
@@ -58,76 +81,18 @@ function shiny_block_info() {
  */
 function shiny_block_view($delta = '') {
 
-    //path to modules libs folder
-    //TODO: \ for linux based OS ? 
-    $libs_path = drupal_get_path('module', 'shiny') . '/libs/';
-
     //delta is the name of blocks passed in from drupal
-    //can also use if($delta == 'name of the block')
+
         switch ($delta) {
-        case 'shiny':
-            $block['subject'] = t('Shiny Main Content');
-            /*
-                Customize the block content   
-            */
-            $block['content'] = array(
+            case 'shiny':
+                //delegate the job to shiny.block.inc
+                module_load_include('inc', 'shiny', 'shiny.block');
+                $block = shiny_block_content_generate();
+                break;
+        }
 
-                '#attached' => array (
-
-                    'js' => array(
-                        //angularjs
-                        $libs_path.'js/angular.js',
-                        //shiny angular app
-                        $libs_path.'app/app.module.js',
-                        // $libs_path.'app/shiny/shiny.module.js',
-                        // $libs_path.'app/shiny/shiny.component.js',
-                        // $libs_path.'app/shiny/shiny.service.js',
-                        //v1.2
-                        $libs_path.'app/cShiny/cShiny.js',
-                        $libs_path.'app/cShiny/services.js',
-                        $libs_path.'app/cShiny/controllers.js',
-
-                    ),// end js array
-
-                    'css' => array()
-                ), //attached 
-                '#markup' => generate_block_content($libs_path)
-                // '#markup' => t('shiny block main content asdfsdf')
-            );
-            
         return $block;
-  }
   
-}
-
-
-// /*
-//     Test
-// */
-function generate_block_content($libs_path){
-
-
-    //get node info
-    $node = menu_get_object();
-    $node_ua = drupal_get_path_alias();
-
-    $html_content = t('
-<p> This is the main content of shiny block</p>
-<p> Node ID : @nid </br>
-    Node type: @type</br>
-    Node title : @title </br>
-    Node url alias: @alias</br>
-</p>
-
-<div ng-app="devApp"> <main-component> </main-component> </div>
-    ', array(
-            '@nid' => $node->nid,
-            '@type' => $node->type,
-            '@title' => $node->title,
-            '@alias' => $node_ua
-        ));
-
-    return $html_content;
 }
 
 

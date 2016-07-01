@@ -1,0 +1,107 @@
+<?php
+
+/*
+    hook_block 
+    Create custom block for shiny
+*/
+function shiny_block_info() {
+  $blocks['shiny'] = array(
+    // The name that will appear in the block list.
+    'info' => t('Shiny main content'),
+    // Default setting.
+    //https://api.drupal.org/api/drupal/includes!common.inc/group/block_caching/7.x
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
+  return $blocks;
+}
+
+
+
+
+/**
+ * Implements hook_block_view().
+ * 
+ * Prepares the contents of the block.
+ */
+function shiny_block_view($delta = '') {
+
+    //path to modules libs folder
+    $libs_path = drupal_get_path('module', 'shiny') . '/libs/';
+
+    //delta is the name of blocks passed from drupal
+    //can also use if($delta == 'name of the block')
+        switch ($delta) {
+        case 'shiny':
+            $block['subject'] = t('Shiny Main Content');
+            /*
+                Customize the block content   
+            */
+            $block['content'] = array(
+
+                '#attached' => array (
+
+                    'js' => array(
+                        //angularjs
+                        $libs_path.'js/angular.min.js',
+                        //shiny angular app
+                        $libs_path.'app/app.module.js',
+                        //v1.3
+                        $libs_path.'app/cShiny/cShiny.js',
+                        $libs_path.'app/cShiny/services.js',
+                    ),// end js array
+                    'css' => array()
+                ), //attached 
+                '#markup' => generate_block_content()
+            );            
+        return $block;
+  }//switch
+}
+
+
+function generate_block_content(){
+
+    //get node info
+    $node = menu_get_object();
+    $node_ua = drupal_get_path_alias();
+
+    //==get parent space =============
+    // $space_id = oa_core_get_group_from_node($node, array(OA_SPACE_TYPE));
+
+    $site_map_array = 
+      oa_core_get_parents_with_titles(22374, OA_SPACE_TYPE, NULL, FALSE, TRUE, NULL);
+    //oa_core_get_parents return an array of parents nid with titles
+    $space_parents = 
+      oa_core_get_parents_with_titles($node->nid, OA_SPACE_TYPE, NULL, FALSE, TRUE, NULL);
+    
+
+    drupal_add_js(array(
+                        'Api'=>array(
+                                      'space_parents' => json_encode($space_parents)
+                                    )
+                       ), 'setting');
+    
+
+    //=================================
+
+
+    $html_content = t('
+
+<p> This is the main content of shiny block</p>
+<p> Node ID : @nid </br>
+    Node type: @type</br>
+    Node title : @title </br>
+    Node url alias: @alias</br>
+</p>
+
+<div ng-app="devApp"> <main-component> </main-component> </div>
+    ', array(
+            '@nid' => $node->nid,
+            '@type' => $node->type,
+            '@title' => $node->title,
+            '@alias' => $node_ua,
+        ));
+
+    return $html_content;
+}
+
+

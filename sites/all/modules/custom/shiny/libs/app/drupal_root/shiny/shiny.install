@@ -1,0 +1,7 @@
+<?php
+
+
+function shiny_uninstall(){
+
+    variable_del('shiny_nodetypes');
+}

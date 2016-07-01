@@ -6,6 +6,10 @@ files[] = shiny.modules
 files[] = shiny.admin.inc
 files[] = shiny.install
 
+
+files[] = shiny.api.inc
+files[] = shiny.block.inc
+
 files[] = libs/app/app.module.js
 files[] = libs/app/cShiny/cShiny.js
 
